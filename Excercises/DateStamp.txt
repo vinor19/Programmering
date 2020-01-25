@@ -1,0 +1,10 @@
+public class DateStamp{
+	private int year, month, day;
+	private TimeStamp timeStamp;
+
+	public DateStamp(){
+	
+	
+	}
+
+}

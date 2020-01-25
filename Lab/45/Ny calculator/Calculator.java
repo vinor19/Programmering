@@ -9,13 +9,15 @@ public class Calculator{
 	public static void main(String[] args){
 		reader = new Scanner(System.in);
 		System.out.println("Lommeregner åben");
-
-			System.out.println("Hvad skal beregnes: ");
-			String udtryk = reader.nextLine().trim();
-			List list = tokenize(udtryk);
-			Fraction f = parseExpression(list);
-			System.out.println(f);	
-			
+		System.out.println("Hvad skal beregnes: ");
+		String udtryk = reader.nextLine().trim();
+		List list = tokenize(udtryk);
+		Fraction f = parseExpression(list);
+		System.out.println(f);
+		f.simplify();
+		System.out.println(f);
+		System.out.println(f.value());
+		System.out.println("Lavet om til et heltal + broek " + f.integerPart() + " + " + f.properPart());
 	}
 	
 	/*
@@ -81,5 +83,6 @@ public class Calculator{
 		sum.tail();
 		return result;		
 	}
+
 
 }

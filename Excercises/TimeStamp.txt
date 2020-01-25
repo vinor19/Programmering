@@ -1,0 +1,156 @@
+/*
+ * A class to represent time
+ */
+public class TimeStamp{
+
+private int hours, minutes, seconds;
+
+/*
+ * Default
+ */
+public TimeStamp(){
+	this.hours = 0;
+	this.minutes = 0;
+	this.seconds = 0;
+}
+
+/*
+ * Creates timestamp hours:00:00 (0=<hours<24)
+ */
+public TimeStamp(int hours){
+	this.hours = hours;
+	this.minutes = 0;
+	this.seconds = 0;
+}
+
+/*
+ * Creates timestamp hours:minutes:00 (0=<hours<24 && 0=<mintutes<60)
+ */
+public TimeStamp(int hours, int minutes){
+	this.hours = hours;
+	this.minutes = minutes;
+	this.seconds = 0;
+}
+
+/*
+ * Creates a timestamp for hours:minutes:seconds (0=<hours<24 && 0=<mintutes<60 && 0=<seconds<60)
+ */
+public TimeStamp(int hours, int minutes, int seconds){
+	this.hours = hours;
+	this.minutes = minutes;
+	this.seconds = seconds;
+}
+
+/*
+ * The hours in this timestamp
+ */
+public int hours(){
+	return this.hours;
+}
+
+/*
+ * The minutes in this timestamp
+ */
+public int minutes(){
+	return this.minutes;
+}
+
+/*
+ * The seconds in this timestamp
+ */
+public int seconds(){
+	return this.seconds;
+}
+
+/*
+ * Checks if the timestamp is valid, where 23:59:59 is followed by 00:00:00 
+ */
+public static boolean valid(int hours, int minutes, int seconds){
+	return ((0=<hours) && (hours<24) && 
+		(0=<mintutes) && (minutes<60) && 
+		(0=<seconds) && (seconds<60));
+}
+
+/*
+ * Skips an hour ahead
+ */
+public void skipHour(){
+	hours = (hours + 1)%24;
+}
+
+/*
+ * Skips a minute ahead
+ */
+public void skipMinute(){
+	minutes = minutes + 1;
+	if (minutes >= 60){
+		minutes = minutes%60;
+		skipHour();
+	}
+}
+
+/*
+ * Skips a seconds ahead
+ */
+public void skipSecond(){
+	seconds = seconds + 1;
+	if (seconds >= 60){
+		seconds = seconds%60;
+		skipMinute();
+	}
+}
+
+/*
+ * Skips a specified time ahead
+ */
+public void skip(TimeStamp time){
+	seconds = seconds + time.seconds();
+	while(seconds >= 60){
+		seconds = seconds-60;
+		skipMinute();
+	}
+	minutes = minutes + time.minutes();
+	while(minutes >= 60){
+		minutes = minutes%60;
+		skipHour();
+	}
+	this.hours = (this.hours + time.hours())%24;
+}
+
+/*
+ * Checks if two timestamps are the same 
+ */
+public boolean equals(Object other){
+	if (this==other)
+		return true;
+	if (this == null)
+		return false;
+	if (!(other instanceof TimeStamp))
+		return false;
+	TimeStamp other = (TimeStamp)other;
+	return ((this.hours == other.hours) && 
+		(this.minutes == other.minutes) && 
+		(this.seconds == other.seconds));
+}
+
+/*
+ * Copies a timestamp
+ */
+public TimeStamp copy(){
+	return TimeStamp(hours,minutes,seconds);
+}
+
+/*
+ * Creates a textual representation of the timestamp
+ */
+public String toString(){
+	return ""+(hours==0 ? "0":"")+hours+":"+
+		(minutes<10 ? "0":"")+minutes+":"+
+		(seconds<10 ? "0":"")+seconds;
+}
+
+/*
+ * Hashcode: 3600*hours+60*minutes+seconds || hours+minutes*31+seconds*31*31
+ */
+
+}

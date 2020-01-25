@@ -1,0 +1,122 @@
+public class ShoppingCart{
+	private Product[] cart;
+	private double cost;
+	private int numberOfItems;
+	private static int numberOfCarts=0;
+	private int id;
+
+	/*
+	 * Constructor uden parameter
+	 */
+	public ShoppingCart(){
+		cost=0;
+		numberOfitems=0;
+		cart = new Product[10];
+		id=numberOfCarts;
+		numberOfCarts = numberOfCarts + 1;
+	}
+
+	/*
+	 * Returns the total price of this shoppingcart
+	 */
+	public double totalPrice(){
+		return cost;
+	}
+
+	/*
+	 * Returns the number of carts created
+	 */
+	public int howMany(){
+		return numberOfCarts;
+	}
+
+	/*
+	 * Returns the product in this shoppingcart
+	 */
+	public Product[] cart(){
+		Product[] returnCart = new Product[numberOfItems];
+		for(int i = 0; i<numberOfitems; i++)
+			returnCart[i] = cart[i].copy();
+		return returnCart;
+	}
+
+	/*
+	 * ingen setter, fucker alt
+	 */
+
+	
+	/*
+	 * Adds a product to this shoppingcart
+	 */
+	public void add(Product product){
+		if (numberOfItems == cart.length)
+			expand();
+		cart[numberOfItems] = product;
+		numberOfItems = numberOfItems + 1;
+		cost = cost + product.cost();
+	}
+
+	/*
+	 * Expands shoppingcart
+	 */
+	private	void expand(){
+		Product[] newCart = new Product[cart.length*2];
+		for(int i = 0; i < cart.length; i++)
+			newCart[i] = cart[i];
+		cart = newCart;
+	}
+	
+	/*
+	 * Checks if you are elligeble for free delivery
+	 */
+	public boolean freeDelivery(){
+		return numberOfItems>=50;
+	}
+
+	/*
+	 * Returns a copy of the most expensive product in this cart, numberOfItems>0
+	 */
+	public Product mostExpensive(){
+		
+		Product mostExpensive = null;
+		double highestPrice = Double.MIN_INFINITY;
+		for(int i = 0; i<numberOfItems;i++)
+			if (cart[i].price()>highestPrice){
+				mostExpensive=cart[i];
+				highestPrice=mostExpensive.price();
+			}
+		return (mostExpensive==null ? null : mostExpensive.copy());
+	}
+
+	/*
+	 * Returns the highest price in this shoppingcart, numberOfItems>0
+	 */
+	public Product highestPrice(){
+		return mostExpensive().price();
+	}
+
+	/*
+	 * Returns the number of a product in this shopping cart, numberOfItems>0
+	 */
+	public int howMany(Product product){
+
+
+	}
+
+	/*
+	 * Removes the most expensive product, numberOfItems>0
+	 */
+	public void removeMostExpensive(){
+		Product mostExpensive = mostExpensive();
+		int i = 0;
+		while (i<numberOfItems)
+			if (cart[i].equals(mostExpensive)){
+				cart[i] = cart[numberOfItems.1];
+				numberOfItems = numberOfItems - 1;
+			}
+			else
+				i = i + 1;
+	}
+	
+
+}

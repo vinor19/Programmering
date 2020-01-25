@@ -1,5 +1,4 @@
 import java.util.Scanner;
-
 public class Calculator{
 
 	private static Scanner reader;
@@ -9,13 +8,20 @@ public class Calculator{
 	public static void main(String[] args){
 		reader = new Scanner(System.in);
 		System.out.println("Lommeregner åben");
-
-			System.out.println("Hvad skal beregnes: ");
-			String udtryk = reader.nextLine().trim();
-			List list = tokenize(udtryk);
-			Fraction f = parseExpression(list);
-			System.out.println(f);	
-			
+		System.out.println("Hvad skal beregnes: ");
+		String udtryk = reader.nextLine().trim();
+		List list = tokenize(udtryk);
+		try{
+		Fraction f = parseExpression(list);
+		System.out.println(f);
+		f.simplify();
+		System.out.println(f);
+		System.out.println(f.value());
+		System.out.println("Lavet om til et heltal + broek " + f.integerPart() + " + " + f.properPart());
+		}catch(IncorrectInputException e){
+			System.out.print(e.getMessage());
+		}
+		
 	}
 	
 	/*
@@ -28,7 +34,7 @@ public class Calculator{
 	/*
 	 * Parses expression
 	 */
-	private static Fraction parseExpression(List sum){
+	private static Fraction parseExpression(List sum)throws IncorrectInputException{
 		Fraction result = parseMultiplication(sum);
 		if(sum.isEmpty()){
 			return result;
@@ -49,7 +55,7 @@ public class Calculator{
 		}
 	}
 	
-	private static Fraction parseMultiplication(List sum){
+	private static Fraction parseMultiplication(List sum)throws IncorrectInputException{
 		Fraction result = parseTerm(sum);
 		if(sum.isEmpty())
 			return result;
@@ -70,16 +76,24 @@ public class Calculator{
 		}
 	}
 	
-	private static Fraction parseTerm(List sum){
+	private static Fraction parseTerm(List sum) throws IncorrectInputException{
 		if(sum.head().equals("(")){
 			sum.tail();
 			Fraction result = parseExpression(sum);
+			if (sum.head().equals(")"))
 			sum.tail();
+		else
+			throw new IncorrectInputException("forventede ), men fik: " + sum.head());
 			return result;
 		}
+		try{
 		Fraction result = new Fraction(Integer.valueOf(sum.head()));
 		sum.tail();
-		return result;		
+		return result;
+		} catch(NumberFormatException e){
+			throw new IncorrectInputException("Forventet et tal, fik: " + sum.head());
+		}
 	}
+
 
 }
