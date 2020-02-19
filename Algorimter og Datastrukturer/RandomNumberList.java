@@ -11,7 +11,6 @@ public class RandomNumberList{
 	}
 
 	public static ArrayList randomList(int n){
-		
 		ArrayList<Integer> listOfInts = new ArrayList<>();
 		for(int i = 0; i<n;i++)
 			listOfInts.add(i);

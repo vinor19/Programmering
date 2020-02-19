@@ -1,10 +1,13 @@
+import java.lang.IllegalArgumentException;
 public class Box<T>{
-	
+
 	//Atributes
 	private final T content;
 	
 	//Contstructor
-	public Box(T content){
+	public Box(T content) throws IllegalArgumentException{
+		if (content == null)
+			throw new IllegalArgumentException();
 		this.content = content;
 	}
 
@@ -14,8 +17,8 @@ public class Box<T>{
 	}
 	
 	//Implementation of Apply
-	public O apply(BoxFunction<T,O> BoxFunctions){
-		return BoxFunctions.apply(this.contents);
+	public <O> O apply(BoxFunctions<T,O> BoxFunctions){
+		return BoxFunctions.apply(this.content);
 	}
 
 }
