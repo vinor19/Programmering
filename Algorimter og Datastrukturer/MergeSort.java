@@ -2,17 +2,17 @@ import java.util.ArrayList;
 
 
 public class MergeSort{
-
-	public static void mergeSort(ArrayList<Integer> list, int p, int r){
-		if (p<r){
+	
+	public static int mergeSort(ArrayList<Integer> list, int p, int r){
+		if (p < r){
 			int q = (p+r)/2;
-			mergeSort(list, p, q);
-			mergeSort(list, q+1, r);
-			merge(list, p, q, r);
+			return (mergeSort(list, p, q) + mergeSort(list, q+1, r) +  merge(list, p, q, r));
 		}
+		return 0;
 	}
 
-	public static void merge(ArrayList<Integer> list, int p, int q, int r){
+	public static int merge(ArrayList<Integer> list, int p, int q, int r){
+		int count = 0;
 		int n1 = q - p + 1;
 		int n2 = r - q;
 		int[] L = new int[n1+1];
@@ -31,8 +31,10 @@ public class MergeSort{
 				i = i + 1;
 			}else{
 				list.set(k, R[j]);
+				count = count + n1 - i;
 				j = j + 1;
 			}	
 		}
+		return count;
 	}
 }
